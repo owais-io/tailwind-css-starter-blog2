@@ -1,3 +1,5 @@
+// siteMetadata.js
+
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
   title: 'AI Driven Secure Cloud DevOps',
