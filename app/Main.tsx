@@ -4,7 +4,7 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 // import NewsletterForm from 'pliny/ui/NewsletterForm'
-import { AboutSection } from '@/components/AboutSection'
+// import { AboutSection } from '@/components/AboutSection'
 
 const MAX_DISPLAY = 5
 
@@ -28,7 +28,7 @@ export default function Home({ posts }) {
               />
             </div>
             <div className="md:w-2/3">
-            <AboutSection />
+            {/* <AboutSection /> */}
             </div>
           </div>
         </div>
