@@ -4,7 +4,6 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 // import NewsletterForm from 'pliny/ui/NewsletterForm'
-import content from '@/data/content.json'
 
 const MAX_DISPLAY = 5
 
@@ -27,14 +26,7 @@ export default function Home({ posts }) {
                 className="rounded-full"
               />
             </div>
-            <div className="md:w-2/3">
-  <p className="text-lg leading-7 text-gray-500 dark:text-gray-400 text-justify">
-    {content.intro}
-  </p>
-  <p className="text-lg leading-7 text-gray-500 dark:text-gray-400 text-justify">
-    {content.details}
-  </p>
-</div>
+            <div className="md:w-2/3"></div>
           </div>
         </div>
 
