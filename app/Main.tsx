@@ -26,8 +26,8 @@ export default function Home({ posts }) {
                 className="rounded-full"
               />
             </div>
-            <div className="md:w-2/3 text-lg leading-7 text-gray-500 dark:text-gray-400 text-justify">
-              As a DevOps Engineer.
+            <div className="md:w-2/3">
+              <p></p>
             </div>
           </div>
         </div>
