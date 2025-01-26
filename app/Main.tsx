@@ -27,6 +27,7 @@ export default function Home({ posts }) {
               />
             </div>
             <div className="md:w-2/3">
+            <p> hi there</p>
             </div>
           </div>
         </div>
