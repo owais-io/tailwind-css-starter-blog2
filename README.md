@@ -21,8 +21,8 @@ All content in this blog is original and created by me. However, to allow others
 
 ## Contact Information
 
-For any questions, suggestions, or contributions, feel free to reach out via my LinkedIn profile: [Owais Abbasi](https://linkedin.com/in/owaisabbasi89).
+For any questions, suggestions, or contributions, feel free to reach out via my LinkedIn profile: [Owais Abbasi](https://linkedin.com/in/owais-io).
 
 ## Social Media Links
 
-- [LinkedIn](https://linkedin.com/in/owaisabbasi89)
+- [LinkedIn](https://linkedin.com/in/owais-io)
