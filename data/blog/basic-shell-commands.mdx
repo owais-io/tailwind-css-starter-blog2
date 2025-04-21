@@ -1,0 +1,274 @@
+---
+title: 'Basic Shell Commands'
+date: '2025-01-13'
+lastmod: '2025-01-13'
+tags: [‘linux’, ’shell’, ’bash’, ’terminal’, ’command-line’, ’devops’, ’unix’, ’scripting’, ’cli’]
+draft: false
+summary: 'A guide to basic shell commands, including file management, navigation, and system tasks in Linux. Learn commands like ls, cd, pwd, cp, and more for efficient terminal usage.'
+canonicalUrl: https://owais.io/basic-shell-commands
+---
+
+# Basic Shell Commands
+
+In this blog post, I will be explaining to you a few of the basic shell commands. So let's start.
+
+## `ls`
+
+The first command is “ls”. It is a short form of “list”. It lists down all the files and directories available in a particular directory.
+
+```bash
+[centos@localhost ~]$ ls
+Desktop  Documents  Downloads  Music  Pictures  Public  R-Labs  Templates  Videos
+```
+
+It can be used with many flags such as:
+
+- **`a`**: Means “all,” which will show all the hidden files as well.
+
+```bash
+[centos@localhost ~]$ ls -a
+.   .bash_history  .bash_profile  .cache   Desktop	Downloads  .mozilla  Pictures  R-Labs 	Videos
+..  .bash_logout   .bashrc    	.config  Documents  .local 	Music 	Public	Templates  .viminfo
+```
+
+- **`l`**: Shows other details about the files and directory such as creation time, the size of the file, the ownership rights of the file, etc.
+
+```bash
+[centos@localhost ~]$ ls -l
+total 0
+drwxr-xr-x. 2 centos centos  6 Jan 13 04:01 Desktop
+drwxr-xr-x. 2 centos centos  6 Jan 13 04:01 Documents
+drwxr-xr-x. 2 centos centos 24 Jan 13 05:46 Downloads
+drwxr-xr-x. 2 centos centos  6 Jan 13 04:01 Music
+drwxr-xr-x. 2 centos centos  6 Jan 13 04:01 Pictures
+drwxr-xr-x. 2 centos centos  6 Jan 13 04:01 Public
+drwxr-xr-x. 3 centos centos 32 Jan 13 05:44 R-Labs
+drwxr-xr-x. 2 centos centos  6 Jan 13 04:01 Templates
+drwxr-xr-x. 2 centos centos  6 Jan 13 04:01 Videos
+```
+
+---
+
+## `cd`
+
+The next command is “cd”. It means “change directory”. This command is used when you want to change your path from your current directory to any other directory. With this command you can write the name of the sub-directory you want to go into or you can also write an absolute path starting from the slash (`/`) symbol or you can go into your parent directory through the use of double full stops.
+
+```bash
+[centos@localhost ~]$ pwd
+/home/centos
+[centos@localhost ~]$ cd Documents/
+[centos@localhost Documents]$ pwd
+/home/centos/Documents
+[centos@localhost Documents]$ cd ..
+[centos@localhost ~]$ pwd
+/home/centos
+```
+
+---
+
+## `pwd`
+
+The other command is “pwd”. Its full form is the “present working directory”. When you hit this command, the output will show you the absolute path of your current working directory.
+
+```bash
+[centos@localhost R-Labs]$ pwd
+/home/centos/R-Labs
+```
+
+---
+
+## `cp`
+
+The next command is “cp”. It means “copy”. It is used for copying files or directories. It is used with the source and destination. The good practice is to write the full absolute paths in both the source and directories in order to avoid any kind of errors in the script.
+
+```bash
+[centos@localhost test]$ tree
+.
+├── test_dir
+└── test_file
+
+
+1 directory, 1 file
+[centos@localhost test]$ cp /home/centos/test/test_file /home/centos/test/test_dir/
+[centos@localhost test]$ tree
+.
+├── test_dir
+│   └── test_file
+└── test_file
+
+
+1 directory, 2 files
+```
+
+---
+
+## `mv`
+
+The next command is “mv”. It means “move”. It is used to move or transfer files from one location to another. Similarly, it is also used with the source and destination paths.
+
+```bash
+[centos@localhost test]$ tree
+.
+├── test_dir
+└── test_file
+
+
+1 directory, 1 file
+[centos@localhost test]$ mv /home/centos/test/test_file /home/centos/test/test_dir/
+[centos@localhost test]$ tree
+.
+└── test_dir
+	└── test_file
+
+
+1 directory, 1 file
+```
+
+At the same time, this command is also used to rename the file or directory.
+
+```bash
+[centos@localhost test_dir]$ ls
+test_file
+[centos@localhost test_dir]$ mv test_file renamed
+[centos@localhost test_dir]$ ls
+renamed
+```
+
+---
+
+## `rm`
+
+The next command is “rm”. It means “remove”. It is used to delete the files or directories. One of the famous flags which it is used with is **`r`**. If you use this flag, it will not just delete the directory but its contents as well.
+
+```bash
+[centos@localhost test]$ tree
+.
+└── test_dir
+	└── renamed
+
+
+1 directory, 1 file
+[centos@localhost test]$ rm -r test_dir/
+[centos@localhost test]$ tree
+.
+
+
+0 directories, 0 files
+```
+
+---
+
+## `mkdir`
+
+Another command is “mkdir”. It is the abbreviation of “make directory”. It is similar to the creation of a new folder. One of the famous flags that is commonly used is the **`p`** flag. When it is used with the “p” flag, you can create nested paths as well. Try to understand it from the following example.
+
+```bash
+[centos@localhost test]$ tree
+.
+
+
+0 directories, 0 files
+[centos@localhost test]$ mkdir -p ./first/second/third
+[centos@localhost test]$ tree
+.
+└── first
+	└── second
+    	└── third
+
+
+3 directories, 0 files
+```
+
+---
+
+## `rmdir`
+
+The next command is “rmdir”. It is the abbreviation of “remove directory”. It is used to delete an empty directory.
+
+```bash
+[centos@localhost test]$ tree
+.
+└── empty
+
+
+1 directory, 0 files
+[centos@localhost test]$ rmdir empty
+[centos@localhost test]$ tree
+.
+
+
+0 directories, 0 files
+```
+
+---
+
+## `echo`
+
+The next command is “echo” command. It is used to print out the text to the terminal.
+
+```bash
+[centos@localhost test]$ echo hello
+hello
+```
+
+---
+
+## Input-output redirection symbol (`>`, `>>`)
+
+This is called input-output redirection symbol (`>`). It prints the output of one command into a text file. This symbol, if used, will overwrite the already existing file. If you don't want to overwrite the file but to append in the file then use double sign (`>>`).
+
+```bash
+[centos@localhost test]$ touch dummy
+[centos@localhost test]$ pwd > dummy
+[centos@localhost test]$ cat dummy
+/home/centos/test
+[centos@localhost test]$ ls > dummy
+[centos@localhost test]$ cat dummy
+dummy
+[centos@localhost test]$ pwd >> dummy
+[centos@localhost test]$ cat dummy
+dummy
+/home/centos/test
+```
+
+---
+
+## Pipeline (`|`)
+
+This symbol is called pipeline. It converts the output of one command as an input for the other command.
+
+```bash
+[centos@localhost test]$ cat dummy
+dummy
+/home/centos/test
+[centos@localhost test]$ cat dummy | wc
+  	2   	2  	24
+```
+
+In the above illustration, the contents of the file dummy becomes an input for wc command which word count. The result is showing 2 followed by 2 which is further followed by 24. It means that there are 2 lines then 2 words and a total 24 characters.
+
+---
+
+## Error Redirection (`2>`)
+
+The above symbol is used to copy the error in a text file.
+
+```bash
+[centos@localhost test]$ cat random 2> eror.txt
+[centos@localhost test]$ cat eror.txt
+cat: random: No such file or directory
+```
+
+---
+
+That's it for today. Thanks!
+
+---
+
+## A Bit More About Me
+
+Hi, I'm **Owais**, a **DevOps Engineer** soon to become a **DevSecOps**, **AI**, and **Cloud Engineer**!  
+I'm currently studying a **UK-accredited RQF Level-6 diploma** that provides you with job-ready skills from the very beginning, with a **100% job placement guarantee** or else money-back guarantee. This does not end here, it also includes a remote internship with industrial-level projects, resume writing, interview preparation, and even makes you eligible for international MSc programs. Furthermore, diploma holders receive free immigration consultancy for the **US**, **UK**, **Canada**, and **Europe**. It is available in multiple languages, with a **7-day free demo**.
+
+Click the link below to learn more:  
+[https://alnafi.com/?al_aid=6d5529727bec42a](https://alnafi.com/?al_aid=6d5529727bec42a)
