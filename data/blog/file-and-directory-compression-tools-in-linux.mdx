@@ -1,0 +1,251 @@
+---
+title: 'File and Directory Compression Tools in Linux'
+date: '2025-01-14'
+lastmod: '2025-01-14'
+tags: [‘linux’,’shell’,’bash’,’terminal’,’command-line’,’devops’,’unix’,’scripting’,’cli’,’compression’,’archiving’,’extraction’,’hardlink’,’softlink’]
+draft: false
+summary: 'This guide covers file and directory compression tools in Linux using shell commands. It explains archiving with tar, compression with gzip and bzip2, and their respective extraction methods. The difference between gzip (faster) and bzip2 (better compression) is discussed. Additionally, it introduces hard links (file copies sharing inode) and soft links (shortcuts with independent inodes).'
+canonicalUrl: https://owais.io/file-and-directory-compression-tools-in-linux
+---
+
+# File and Directory Compression Tools in Linux
+
+This post would be about the file and directory compression tools in Linux through shell commands.
+
+After learning the commands below, you will be able to understand the use of archiving and compression tools like `tar`, `gzip`, and `bzip2`. Finally, concepts like hard links and soft links will be brushed up.
+
+## **Creating a File with `touch`**
+
+Before starting the compression tools, let me give you an understanding of creating a file through the command line. This is the topic that was left out in the last post. You can achieve this through the `touch` command.
+
+```bash
+[centos@localhost demo]$ touch test_file
+[centos@localhost demo]$ ls
+test_file
+```
+
+## **Archiving, Compression, and Extraction Tools**
+
+### **`tar` Command**
+
+#### Creating a Tar File
+`tar` stands for tape archive. It is a tool to archive any number of files into a single file. This can be achieved through the following command:
+
+```bash
+[centos@localhost demo]$ ls -l
+total 0
+drwxr-xr-x. 2 centos centos 137 Jan 13 16:25 contents
+[centos@localhost demo]$ tar -cvf contents.tar contents
+contents/
+contents/file1
+contents/file2
+contents/file3
+contents/file4
+contents/file5
+contents/file6
+contents/file7
+contents/file8
+contents/file9
+contents/file10
+[centos@localhost demo]$ ls -hl
+total 12K
+drwxr-xr-x. 2 centos centos 137 Jan 13 16:25 contents
+-rw-r--r--. 1 centos centos 10K Jan 13 16:27 contents.tar
+```
+
+- `c` - Create
+- `v` - Verbose (list files being processed)
+- `f` - Specify the name of the archive file
+
+#### Extracting a Tar File
+To extract files from a tar file, use the following command:
+
+```bash
+[centos@localhost demo]$ ls
+contents.tar
+[centos@localhost demo]$ tar -xvf contents.tar
+contents/
+contents/file1
+contents/file2
+contents/file3
+contents/file4
+contents/file5
+contents/file6
+contents/file7
+contents/file8
+contents/file9
+contents/file10
+
+[centos@localhost demo]$ tree
+.
+├── contents
+│   ├── file1
+│   ├── file10
+│   ├── file2
+│   ├── file3
+│   ├── file4
+│   ├── file5
+│   ├── file6
+│   ├── file7
+│   ├── file8
+│   └── file9
+└── contents.tar
+
+1 directory, 11 files
+[centos@localhost demo]$ ls -hl
+total 12K
+drwxr-xr-x. 2 centos centos 137 Jan 13 16:25 contents
+-rw-r--r--. 1 centos centos 10K Jan 13 16:27 contents.tar
+```
+
+- `x` - Extract
+- `v` - Verbose
+- `f` - Specify the name of the tar file
+
+---
+
+### **`gzip` Command**
+
+#### Creating a Gzip File
+This tool compresses the size of files while archiving them. You can use it with `tar` as follows:
+
+```bash
+[centos@localhost demo]$ ls
+contents
+[centos@localhost demo]$ tar -cvzf contents.tar.gz contents
+contents/
+contents/file1
+contents/file2
+contents/file3
+[centos@localhost demo]$ ls
+contents  contents.tar.gz
+```
+
+- `z` - Compress using gzip
+
+The extension `.gz` denotes the compressed tar file.
+
+#### Extracting a Gzip File
+To extract a gzip-compressed tar file:
+
+```bash
+[centos@localhost demo]$ ls
+contents.tar.gz
+[centos@localhost demo]$ tar -xvzf contents.tar.gz
+contents/
+contents/file1
+contents/file2
+contents/file3
+[centos@localhost demo]$ ls -l
+total 4
+drwxr-xr-x. 2 centos centos  45 Jan 13 16:34 contents
+-rw-r--r--. 1 centos centos 237 Jan 13 16:36 contents.tar.gz
+```
+
+- Replace `c` with `x` to extract.
+
+---
+
+### **`bzip2` Command**
+
+#### Creating a Bzip2 File
+`bzip2` compresses files more efficiently than `gzip`. Use it with `tar` as follows:
+
+```bash
+[centos@localhost demo]$ ls
+contents
+[centos@localhost demo]$ tar -cvjf contents.tar.bz2 contents
+contents/
+contents/file1
+contents/file2
+contents/file3
+[centos@localhost demo]$ ls
+contents  contents.tar.bz2
+```
+
+- `j` - Compress using bzip2
+
+The extension `.bz2` denotes the compressed tar file.
+
+#### Extracting a Bzip2 File
+To extract a bzip2-compressed tar file:
+
+```bash
+[centos@localhost demo]$ ls
+contents.tar.bz2
+[centos@localhost demo]$ tar -xvjf contents.tar.bz2
+contents/
+contents/file1
+contents/file2
+contents/file3
+[centos@localhost demo]$ ls
+contents  contents.tar.bz2
+```
+
+- Replace `c` with `x` to extract.
+
+---
+
+## **Difference Between `gzip` and `bzip2`**
+
+### **Compression Algorithm**
+- `gzip`: Faster but less compression.
+- `bzip2`: Slower but better compression.
+
+If you prioritize speed, choose `gzip`. For better compression, choose `bzip2`.
+
+---
+
+## **Understanding Links in Linux**
+
+### **Hard Link**
+A hard link is an actual copy of an original file that shares the same inode number. Changes in one file reflect in the hard link, and vice versa. Deleting one does not affect the other.
+
+#### Note:
+- Cannot be made across different partitions.
+
+```bash
+[centos@localhost demo]$ ls -l
+total 4
+-rw-r--r--. 1 centos centos 31 Jan 13 16:45 file1.txt
+[centos@localhost demo]$ ln file1.txt hardened.txt
+[centos@localhost demo]$ ls -il
+total 8
+2597316 -rw-r--r--. 2 centos centos 31 Jan 13 16:45 file1.txt
+2597316 -rw-r--r--. 2 centos centos 31 Jan 13 16:45 hardened.txt
+```
+
+### **Soft Link**
+A soft link is a shortcut to a file. It does not share the inode number with the original file.
+
+#### Characteristics:
+- Can be made across partitions.
+- If the original file is deleted, the soft link becomes unusable.
+
+```bash
+[centos@localhost demo]$ ls -il
+total 4
+2597316 -rw-r--r--. 1 centos centos 31 Jan 13 16:45 file1.txt
+[centos@localhost demo]$ ln -s file1.txt softened.txt
+[centos@localhost demo]$ ls -il
+total 4
+2597316 -rw-r--r--. 1 centos centos 31 Jan 13 16:45 file1.txt
+2597337 lrwxrwxrwx. 1 centos centos  9 Jan 13 16:47 softened.txt -> file1.txt
+```
+
+---
+
+Thank you!
+
+
+---
+
+## A Bit More About Me
+
+Hi, I'm **Owais**, a **DevOps Engineer** soon to become a **DevSecOps**, **AI**, and **Cloud Engineer**!  
+I'm currently studying a **UK-accredited RQF Level-6 diploma** that provides you with job-ready skills from the very beginning, with a **100% job placement guarantee** or else money-back guarantee. This does not end here, it also includes a remote internship with industrial-level projects, resume writing, interview preparation, and even makes you eligible for international MSc programs. Furthermore, diploma holders receive free immigration consultancy for the **US**, **UK**, **Canada**, and **Europe**. It is available in multiple languages, with a **7-day free demo**.  
+
+Click the link below to learn more:  
+[https://alnafi.com/?al_aid=6d5529727bec42a](https://alnafi.com/?al_aid=6d5529727bec42a)
+
+

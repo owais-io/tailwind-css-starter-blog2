@@ -1,0 +1,204 @@
+---
+title: 'Understanding File Permissions and System Documentation in Linux'
+date: '2025-01-15'
+lastmod: '2025-01-15'
+tags: [‘linux’,’shell’,’bash’,’terminal’,’command-line’,’devops’,’unix’,’scripting’,’cli’,’file-permissions’,’documentation’,’chmod’,’octal-notation’,’symbolic-notation’]
+draft: false
+summary: 'This guide explains how to view, set, and change file and directory permissions in Linux using symbolic and octal notations. It covers bulk permission changes with the find command and demonstrates accessing Linux system documentation via man, info, and file-based methods.'
+canonicalUrl: https://owais.io/understanding-file-permissions-and-system-documentation-in-linux
+---
+
+# Introduction
+
+In this post, we will discuss listing down and reading down the permissions of the files and directories, and how to set them, and how to change them. We will furthermore also learn to change them in bulk operation and also learn to change the permissions through two different ways. Then we will learn how to know the details about any particular command and how to access system documentation of each and every command in the Linux shell.
+
+So, it means that this blog post will help you to learn how to manage file permissions and how to use system documentation to your advantage.
+
+## Viewing Permissions of Files and Directories
+
+In order to view the permission of the files and directories in any particular directory, use the command “ls” with the flag “l” followed by the file name.
+
+```bash
+[centos@localhost ~]$ ls -l
+total 0
+drwxr-xr-x. 2 centos centos  43 Jan 13 16:47 demo
+drwxr-xr-x. 2 centos centos   6 Jan 13 04:01 Desktop
+drwxr-xr-x. 2 centos centos   6 Jan 13 04:01 Documents
+drwxr-xr-x. 2 centos centos 116 Jan 13 12:57 Downloads
+drwxr-xr-x. 2 centos centos   6 Jan 13 04:01 Music
+drwxr-xr-x. 2 centos centos   6 Jan 13 04:01 Pictures
+drwxr-xr-x. 2 centos centos   6 Jan 13 04:01 Public
+drwxr-xr-x. 3 centos centos  32 Jan 13 05:44 R-Labs
+drwxr-xr-x. 2 centos centos   6 Jan 13 04:01 Templates
+drwxr-xr-x. 2 centos centos  35 Jan 13 09:11 test
+drwxr-xr-x. 2 centos centos   6 Jan 13 04:01 Videos
+```
+
+The output will show you the permissions granted to each file and directory in that particular directory of three different entities. Those entities are user, group, and others. There are three kinds of permissions: read, write, and execute. You can see that where there is no permission or there is no letter like r, w, or x, then there is a hyphen which means that there is no permission allowed.
+
+## Setting and Changing Permissions
+
+In order to set the permissions or change the permissions, we use the command “chmod” followed by the permissions, then file name.
+
+```bash
+[centos@localhost ~]$ ls -l file*
+-rw-r--r--. 1 centos centos 0 Jan 15 07:31 file1
+-rw-r--r--. 1 centos centos 0 Jan 15 07:31 file2
+-rw-r--r--. 1 centos centos 0 Jan 15 07:31 file3
+-rw-r--r--. 1 centos centos 0 Jan 15 07:31 file4
+-rw-r--r--. 1 centos centos 0 Jan 15 07:31 file5
+[centos@localhost ~]$ chmod u+x file{1..5}
+[centos@localhost ~]$ ls -l file*
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file1
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file2
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file3
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file4
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file5
+```
+
+### Two Ways of Setting Permissions
+
+#### Symbolic Notation
+
+Let's discuss first symbolic notation. You will start the command with “chmod,” then comes a permission. For the purpose of permission, you will write the name of the entity such as user, group, or others, but you do not write them in full. You just use their first letter, that is, either “u” or “g” or “o.” Then you will write either plus symbol (+) or minus symbol (-) in case of granting permission and revoke the permission respectively. Then you will write either letter “r” for read permission or letter “w” for write permission or letter “x” for execute permission.
+
+```bash
+[centos@localhost ~]$ ls -l file1
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file1
+[centos@localhost ~]$ chmod g+w file1
+[centos@localhost ~]$ ls -l file1
+-rwxrw-r--. 1 centos centos 0 Jan 15 07:31 file1
+```
+
+You can also write all three or two permissions and entities at the same time, like “u,” “g,” and “o,” that is user, group, and others, then the plus or minus symbol, then all the permissions at the same time such as r, w, and x for read, write, and execute respectively.
+
+```bash
+[centos@localhost ~]$ ls -l file2
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file2
+[centos@localhost ~]$ chmod go+wx file2
+[centos@localhost ~]$ ls -l file2
+-rwxrwxrwx. 1 centos centos 0 Jan 15 07:31 file2
+```
+
+#### Octal Notation
+
+```bash
+[centos@localhost ~]$ ls -l file5
+-rwxr--r--. 1 centos centos 0 Jan 15 07:31 file5
+[centos@localhost ~]$ chmod 766 file5
+[centos@localhost ~]$ ls -l file5
+-rwxrw-rw-. 1 centos centos 0 Jan 15 07:31 file5
+```
+
+Then comes the octal way of permissions. In order to learn the octal permissions, let us first remember that digits 0 to 7 are used for granting the permissions. 0 means there is no right granted, 1 means execute permission, 2 means write permission, 3 means write and execute both permissions, 4 means read permission, 5 means read and execute permission, 6 means read and write permission, and 7 means all three read, write, and execute permission.
+
+Besides number 1, 2, and 4, all other seven numbers are the sum of those read, write, or execute permission which are granted to them individually. Such as in the case of letter 7, the permissions are read, write, and execute, so if you add up the numbers of read (4), write (2), and execute (1), the sum will be equal to 7.
+
+Then the permissions are always granted at the same time for the three entities, so the first digit will denote the permissions for the user, the second digit will denote the permissions for the group, and the third one denotes the permission for others.
+
+## Granting or Changing Permissions in Bulk
+
+Let suppose there are a huge number of directories or files, of which you want to change the permissions. Then it will become very hectic to change for each and every file or directory individually. Here comes the “find” command to our rescue.
+
+```bash
+[centos@localhost test_dir]$ find ./ -type f -perm 644 -exec ls -l {} \;
+```
+
+In the given command, the word find is followed by the path in which we need to change the permissions in bulk. Then comes the “type” flag through which you can specify the type of file or directory on which you want the operation to be performed. Or if you don't want to specify anything at all, then the operation will be performed on all files and directories irrespective of the type.
+
+Then comes a flag of permission followed by the octal notation of permission. This way, this command will be able to find all those files on which the permission 644 is granted. Then comes the “exec” flag which will perform the subsequent operation on the files or directories which have been found as a result of find command.
+
+Here in this example, we have just listed them down through the “ls” command with the flag l. Curly brackets {} are a placeholder for the input of the “ls” command which will be provided as a result of the find command. And finally, the backlash () and a semicolon (;) denotes the end of the command.
+
+Similarly, instead of just listing down, you can also specify the chmod command in place of the “ls” command with the “exec” flag to apply all the permissions.
+
+```bash
+[centos@localhost test_dir]$ find ./ -type f -perm 644 -exec ls -l {} \;
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file1
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file2
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file3
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file4
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file5
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file6
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file7
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file8
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file9
+-rw-r--r--. 1 centos centos 0 Jan 15 07:52 ./file10
+[centos@localhost test_dir]$ find ./ -type f -perm 644 -exec chmod 666 {} \;
+[centos@localhost test_dir]$ ls -l
+total 0
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file1
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file10
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file2
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file3
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file4
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file5
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file6
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file7
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file8
+-rw-rw-rw-. 1 centos centos 0 Jan 15 07:52 file9
+```
+
+## Accessing System Documentation
+
+There are many ways through which you can read the system documentation and the details about each and every single command being used in the Linux terminal.
+
+### Using the man Command
+
+For instance, if you use the word “man” followed by any command such as “ls” command, you can read the details about it, such as what functions it performs and with what kind of flags it can be used with.
+
+```bash
+[centos@localhost test_dir]$ man ls
+```
+
+### Using the info Command
+
+Similarly, there is another command which is called “info.” You can use it by writing “info” followed by the name of the command. It also explains you about the command but in much more detail.
+
+```bash
+[centos@localhost test_dir]$ info ls
+```
+
+### Reading Documentation Files
+
+There is another third way of reading out the documentation, and that is by going through the following path.
+```bash
+[centos@localhost test_dir]$ cd /usr/share/doc
+[centos@localhost doc]$ pwd
+/usr/share/doc
+```
+
+Here you can find countless directories about each and every command, and if you enter any of those directories, you can find a readme file where you can read out its content to learn about that particular command or software or application.
+```bash
+[centos@localhost doc]$ pwd
+/usr/share/doc
+[centos@localhost doc]$ ls
+abattis-cantarell-fonts    	gnome-control-center       	libfprint           	lohit-gujarati-fonts        	python3-gpg
+accountsservice            	gnome-desktop3             	libgcrypt           	lohit-kannada-fonts         	python3-idna
+adcli                      	gnome-disk-utility         	libgdata            	lohit-odia-fonts            	python3-libs
+adobe-mappings-cmap        	gnome-font-viewer          	libgee              	lohit-tamil-fonts           	python3-libxml2
+adobe-mappings-pdf         	gnome-initial-setup        	libgexiv2           	lohit-telugu-fonts          	python3-lxml
+adobe-source-code-pro-fonts	gnome-keyring              	libglvnd            	low-memory-monitor          	python3-pexpect
+alsa-lib                   	gnome-logs                 	libgomp             	lshw                        	python3-psutil
+alsa-utils                 	gnome-menus                	libgpg-error        	lsof                        	python3-ptyprocess
+appstream                  	gnome-online-accounts      	libgphoto2          	lsscsi                      	python3-pyatspi
+at                         	gnome-remote-desktop       	libgsf              	lvm2                        	python3-pycurl
+atk                        	gnome-session              	libgtop2            	lz4-libs                    	python3-pysocks
+atkmm                      	gnome-settings-daemon      	libgudev            	lzo                         	python3-pyudev
+at-spi2-atk                	gnome-shell                	libgusb             	mailcap                     	python3-pyyaml
+at-spi2-core               	gnome-shell-extension-common   libgweather         	mallard-rng                 	python3-requests
+```
+
+## Conclusion
+
+Thank you very much!
+
+---
+
+## A Bit More About Me
+
+Hi, I'm **Owais**, a **DevOps Engineer** soon to become a **DevSecOps**, **AI**, and **Cloud Engineer**!  
+I'm currently studying a **UK-accredited RQF Level-6 diploma** that provides you with job-ready skills from the very beginning, with a **100% job placement guarantee** or else money-back guarantee. This does not end here, it also includes a remote internship with industrial-level projects, resume writing, interview preparation, and even makes you eligible for international MSc programs. Furthermore, diploma holders receive free immigration consultancy for the **US**, **UK**, **Canada**, and **Europe**. It is available in multiple languages, with a **7-day free demo**.  
+
+Click the link below to learn more:  
+[https://alnafi.com/?al_aid=6d5529727bec42a](https://alnafi.com/?al_aid=6d5529727bec42a)
