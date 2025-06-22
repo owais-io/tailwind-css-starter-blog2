@@ -5,7 +5,7 @@ const headerNavLinks = [
   //  { href: '/projects', title: 'Projects' },
   { href: '/about', title: 'About Me' },
   { href: '/subscribe', title: 'Subscribe' },
-  { href: 'resume.pdf', title: 'Resume', external: true },
+  //{ href: 'resume.pdf', title: 'Resume', external: true },
 ]
 
 export default headerNavLinks
